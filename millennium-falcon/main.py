@@ -1,0 +1,31 @@
+from machine import Pin
+import time
+import random
+
+class LED:
+    def __init__(self, pin_num):
+        self.led = Pin(pin_num, Pin.OUT)
+        self.last_toggle = time.ticks_ms()
+        self.state = False  # LED is initially off
+        self.generate_random_interval()
+
+    def update(self):
+        now = time.ticks_ms()
+        if time.ticks_diff(now, self.last_toggle) >= self.interval:
+            self.state = not self.state
+            self.led.value(self.state)
+            self.last_toggle = now
+            self.generate_random_interval()
+
+    def generate_random_interval(self):
+        self.interval = random.randint(100, 3500)
+
+
+leds = [
+    LED(25)
+]
+
+while True:
+    for led in leds:
+        led.update()
+    time.sleep(0.01)
