@@ -22,7 +22,14 @@ class LED:
 
 
 leds = [
-    LED(25)
+    LED(2),
+    LED(3),
+    LED(4),
+    LED(5),
+    LED(6),
+    LED(7),
+    LED(8),
+    LED(9)
 ]
 
 while True:
