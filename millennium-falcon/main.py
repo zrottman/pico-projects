@@ -18,7 +18,12 @@ class LED:
             self.generate_random_interval()
 
     def generate_random_interval(self):
-        self.interval = random.randint(100, 3500)
+        if self.state:
+            # LED is on: shorter intervals
+            self.interval = random.randint(100, 1000)
+        else:
+            # LED is off: longer intervals
+            self.interval = random.randint(1000, 3500)
 
 
 leds = [
