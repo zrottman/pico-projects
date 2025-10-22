@@ -75,7 +75,7 @@ leds = [
     LED(6, .7),
 ]
 
-pulsing_strip = PulsingStrip(pin_num=15, num_leds=120, target_color=(8, 8, 20), steps_increasing=150, steps_decreasing=20)
+pulsing_strip = PulsingStrip(pin_num=15, num_leds=44, target_color=(8, 8, 20), steps_increasing=150, steps_decreasing=20)
 
 while True:
     for led in leds:
