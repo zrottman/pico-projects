@@ -1,11 +1,15 @@
-from machine import Pin
+from machine import Pin, PWM
 import time
 import random
 from neopixel import NeoPixel
 
 class LED:
-    def __init__(self, pin_num):
-        self.led = Pin(pin_num, Pin.OUT)
+    def __init__(self, pin_num, brightness_pct=0.5):
+
+        self.max_brightness = 65535
+        self.led = PWM(Pin(pin_num), freq=1000)
+        self.brightness = int(max(min(1.0, brightness_pct), 0.0) * self.max_brightness)
+        self.led.duty_u16(0)
         self.last_toggle = time.ticks_ms()
         self.state = False  # LED is initially off
         self.generate_random_interval()
@@ -14,7 +18,7 @@ class LED:
         now = time.ticks_ms()
         if time.ticks_diff(now, self.last_toggle) >= self.interval:
             self.state = not self.state
-            self.led.value(self.state)
+            self.led.duty_u16(self.brightness if self.state else 0)
             self.last_toggle = now
             self.generate_random_interval()
 
@@ -57,14 +61,18 @@ class PulsingStrip:
         self.np.write()
 
 leds = [
-    LED(2),
-    LED(3),
-    LED(4),
-    LED(5),
-    LED(6),
-    LED(7),
-    LED(8),
-    LED(9)
+    # red
+    LED(2, .2),
+    LED(9, .2),
+    # blue
+    LED(3, .2),
+    LED(8, .2),
+    # white
+    LED(4, .05),
+    LED(7, .05),
+    # yellow
+    LED(5, .7),
+    LED(6, .7),
 ]
 
 pulsing_strip = PulsingStrip(pin_num=15, num_leds=120, target_color=(10, 10, 20), steps_increasing=150, steps_decreasing=20)
